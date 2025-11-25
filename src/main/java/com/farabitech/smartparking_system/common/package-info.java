@@ -2,3 +2,4 @@
 package com.farabitech.smartparking_system.common;
 
 import org.springframework.modulith.ApplicationModule;
+
