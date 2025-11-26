@@ -36,4 +36,4 @@ Each module contains its own entities and repositories (e.g., entry has ParkingE
 2. Make a class `public` only when it's necessary.
 
 [Previous: Home](../README.md) &nbsp;&nbsp;&nbsp;&nbsp;
-[Next: 2. Follow package-by-feature](step-2.md)
+[Next: 2. Follow package-by-feature](step-1.md)
