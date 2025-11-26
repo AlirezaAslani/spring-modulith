@@ -4,11 +4,13 @@ import com.farabitech.smartparking_system.billing.internal.model.BillingRecord;
 import com.farabitech.smartparking_system.billing.internal.repository.BillingRecordRepository;
 import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-@Component
+@Service
 public class BillingEventListener {
 
 
@@ -19,7 +21,7 @@ public class BillingEventListener {
         this.billingRecordRepository = billingRecordRepository;
     }
 
-    @EventListener
+    @ApplicationModuleListener
     public void handleVehicleExit(VehicleExitedEvent event) {
 
         Duration duration = Duration.between(event.entryTime(), event.exitTime());

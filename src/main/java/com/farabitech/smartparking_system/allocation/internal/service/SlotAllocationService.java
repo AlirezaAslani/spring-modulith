@@ -1,11 +1,10 @@
-package com.farabitech.smartparking_system.allocation.service;
+package com.farabitech.smartparking_system.allocation.internal.service;
 
-import com.farabitech.smartparking_system.allocation.model.Slot;
-import com.farabitech.smartparking_system.allocation.repository.SlotRepository;
+import com.farabitech.smartparking_system.allocation.internal.model.Slot;
+import com.farabitech.smartparking_system.allocation.internal.repository.SlotRepository;
+
 import com.farabitech.smartparking_system.entry.spi.event.VehicleEnteredEvent;
 import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
-import org.springframework.modulith.events.ApplicationModuleListener;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +16,6 @@ public class SlotAllocationService {
         this.slotRepository = slotRepository;
     }
 
-
-    //@Async
-    //@Transactional(propagation = Propagation.REQUIRES_NEW)
-
-    @ApplicationModuleListener //doesnt apply TransactionalEventListener
     public void handleVehicleEntry(VehicleEnteredEvent event) {
 
         Slot slot = slotRepository.findFirstByAvailableTrue()
@@ -33,7 +27,6 @@ public class SlotAllocationService {
         System.out.println("🅿️ Allocated Slot " + slot.getSlotCode() + " to vehicle " + event.vehicleNumber());
     }
 
-   @ApplicationModuleListener
     public void handleVehicleExit(VehicleExitedEvent event) {
         slotRepository.findByVehicleNumber(event.vehicleNumber())
                 .ifPresentOrElse(slot -> {

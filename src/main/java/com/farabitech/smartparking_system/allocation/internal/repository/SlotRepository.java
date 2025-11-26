@@ -1,6 +1,6 @@
-package com.farabitech.smartparking_system.allocation.repository;
+package com.farabitech.smartparking_system.allocation.internal.repository;
 
-import com.farabitech.smartparking_system.allocation.model.Slot;
+import com.farabitech.smartparking_system.allocation.internal.model.Slot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

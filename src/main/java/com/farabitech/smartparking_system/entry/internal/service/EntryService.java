@@ -1,11 +1,12 @@
 package com.farabitech.smartparking_system.entry.internal.service;
 
+import com.farabitech.smartparking_system.entry.spi.event.VehicleEnteredEvent;
 import com.farabitech.smartparking_system.entry.internal.model.ParkingEntry;
 import com.farabitech.smartparking_system.entry.internal.repository.ParkingEntryRepository;
 
-import com.farabitech.smartparking_system.entry.spi.event.VehicleEnteredEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class EntryService {
     }
 
 
+    @Transactional
     public void vehicleEntry(String vehicleNumber) {
         ParkingEntry parkingEntry = new ParkingEntry(null, vehicleNumber, LocalDateTime.now(), null, true);
         repository.save(parkingEntry);

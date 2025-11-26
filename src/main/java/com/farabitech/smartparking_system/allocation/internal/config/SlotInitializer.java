@@ -1,7 +1,7 @@
-package com.farabitech.smartparking_system.allocation.config;
+package com.farabitech.smartparking_system.allocation.internal.config;
 
-import com.farabitech.smartparking_system.allocation.model.Slot;
-import com.farabitech.smartparking_system.allocation.repository.SlotRepository;
+import com.farabitech.smartparking_system.allocation.internal.model.Slot;
+import com.farabitech.smartparking_system.allocation.internal.repository.SlotRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

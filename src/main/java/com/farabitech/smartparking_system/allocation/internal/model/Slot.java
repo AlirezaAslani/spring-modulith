@@ -1,4 +1,4 @@
-package com.farabitech.smartparking_system.allocation.model;
+package com.farabitech.smartparking_system.allocation.internal.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

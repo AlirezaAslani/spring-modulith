@@ -1,11 +1,12 @@
 package com.farabitech.smartparking_system.entry.internal.service;
 
+import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
 import com.farabitech.smartparking_system.entry.spi.exceptions.EntryNotFoundException;
 import com.farabitech.smartparking_system.entry.internal.model.ParkingEntry;
 import com.farabitech.smartparking_system.entry.internal.repository.ParkingEntryRepository;
-import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class ExitService {
     }
 
 
+    @Transactional
     public void vehicleExit(String vehicleNumber) {
         // get vehicle entry details from DB
         // update exit time
@@ -37,6 +39,7 @@ public class ExitService {
         entry.setExitTime(LocalDateTime.now());
         entry.setActive(false);
         repository.save(entry);
+        System.out.println("Publish Vehicle Exited: " + entry.getVehicleNumber());
         publisher.publishEvent(new VehicleExitedEvent(vehicleNumber, entry.getEntryTime(), entry.getExitTime()));
     }
 }
