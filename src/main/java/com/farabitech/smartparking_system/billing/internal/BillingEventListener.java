@@ -3,6 +3,8 @@ package com.farabitech.smartparking_system.billing.internal;
 import com.farabitech.smartparking_system.billing.internal.model.BillingRecord;
 import com.farabitech.smartparking_system.billing.internal.repository.BillingRecordRepository;
 import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
+import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ public class BillingEventListener {
     }
 
     @ApplicationModuleListener
+    @WithSpan(value = "BillingEventListener#handleVehicleExit", kind = SpanKind.CONSUMER)
     public void handleVehicleExit(VehicleExitedEvent event) {
 
         Duration duration = Duration.between(event.entryTime(), event.exitTime());

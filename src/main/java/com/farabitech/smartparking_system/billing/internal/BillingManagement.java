@@ -4,11 +4,13 @@ import com.farabitech.smartparking_system.billing.internal.repository.BillingRec
 
 import com.farabitech.smartparking_system.billing.spi.BillingSPI;
 import com.farabitech.smartparking_system.billing.spi.dto.BillingDTO;
+import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-//TODO add edot span annotation
+
 @Service
 public class BillingManagement implements BillingSPI {
 
@@ -20,6 +22,7 @@ public class BillingManagement implements BillingSPI {
     }
 
     @Override
+    @WithSpan(value = "BillingManagement#getInvoices", kind = SpanKind.INTERNAL)
     public Collection<BillingDTO> getInvoices() {
         ArrayList<BillingDTO> billingDTOs = new ArrayList<>();
          billingRecordRepository.findAll().forEach(billingRecord -> {
