@@ -1,12 +1,13 @@
 package com.farabitech.smartparking_system.allocation.internal.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import com.farabitech.smartparking_system.allocation.internal.model.Slot;
+import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
+import com.farabitech.smartparking_system.entry.spi.event.VehicleEnteredEvent;
 import com.farabitech.smartparking_system.allocation.internal.repository.SlotRepository;
 
-import com.farabitech.smartparking_system.entry.spi.event.VehicleEnteredEvent;
-import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
-import org.springframework.stereotype.Service;
-
+@Slf4j
 @Service
 public class SlotAllocationService {
 

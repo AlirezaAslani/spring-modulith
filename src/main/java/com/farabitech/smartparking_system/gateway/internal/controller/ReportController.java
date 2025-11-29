@@ -5,11 +5,13 @@ import com.farabitech.smartparking_system.billing.spi.dto.BillingDTO;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/reporting")
 public class ReportController {
@@ -23,8 +25,19 @@ public class ReportController {
     @GetMapping({"/invoices"})
     @WithSpan(value = "ReportController#getInvoicesSummery", kind = SpanKind.SERVER)
     Double getInvoicesSummery(Model model, HttpSession session) {
-        return billingSPI.getInvoices().stream()
+        log.info("Received request to get invoice summary");
+
+        var invoices = billingSPI.getInvoices();
+
+
+        log.debug("Fetched {} invoices from BillingSPI", invoices.size());
+
+        double totalAmount = invoices.stream()
                 .mapToDouble(BillingDTO::amount)
                 .sum();
+
+        log.info("Calculated invoice summary: totalAmount={}", totalAmount);
+
+        return totalAmount;
     }
 }

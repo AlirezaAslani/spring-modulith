@@ -1,16 +1,16 @@
 package com.farabitech.smartparking_system.billing.internal;
 
-import com.farabitech.smartparking_system.billing.internal.repository.BillingRecordRepository;
-
-import com.farabitech.smartparking_system.billing.spi.BillingSPI;
-import com.farabitech.smartparking_system.billing.spi.dto.BillingDTO;
-import io.opentelemetry.api.trace.SpanKind;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
+import io.opentelemetry.api.trace.SpanKind;
+import org.springframework.stereotype.Service;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+import com.farabitech.smartparking_system.billing.spi.BillingSPI;
+import com.farabitech.smartparking_system.billing.spi.dto.BillingDTO;
+import com.farabitech.smartparking_system.billing.internal.repository.BillingRecordRepository;
 
+@Slf4j
 @Service
 public class BillingManagement implements BillingSPI {
 

@@ -1,17 +1,17 @@
 package com.farabitech.smartparking_system.billing.internal;
 
+import lombok.extern.slf4j.Slf4j;
+import io.opentelemetry.api.trace.SpanKind;
+import org.springframework.stereotype.Service;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+import org.springframework.modulith.events.ApplicationModuleListener;
+import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
 import com.farabitech.smartparking_system.billing.internal.model.BillingRecord;
 import com.farabitech.smartparking_system.billing.internal.repository.BillingRecordRepository;
-import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
-import io.opentelemetry.api.trace.SpanKind;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
-import org.springframework.context.event.EventListener;
-import org.springframework.modulith.events.ApplicationModuleListener;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
+@Slf4j
 @Service
 public class BillingEventListener {
 

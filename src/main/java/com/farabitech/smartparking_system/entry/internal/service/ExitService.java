@@ -1,21 +1,19 @@
 package com.farabitech.smartparking_system.entry.internal.service;
 
-import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
-import com.farabitech.smartparking_system.entry.spi.exceptions.EntryNotFoundException;
-import com.farabitech.smartparking_system.entry.internal.model.ParkingEntry;
-import com.farabitech.smartparking_system.entry.internal.repository.ParkingEntryRepository;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
+import com.farabitech.smartparking_system.entry.internal.model.ParkingEntry;
+import com.farabitech.smartparking_system.entry.spi.event.VehicleExitedEvent;
+import com.farabitech.smartparking_system.entry.spi.exceptions.EntryNotFoundException;
+import com.farabitech.smartparking_system.entry.internal.repository.ParkingEntryRepository;
+
+@Slf4j
 @Service
 public class ExitService {
-
-    // save vehicle entry details to DB
-    // allocate a parking slot
-    // send notification to the user
 
     private final ParkingEntryRepository repository;
     private final ApplicationEventPublisher publisher;
@@ -29,17 +27,30 @@ public class ExitService {
 
     @Transactional
     public void vehicleExit(String vehicleNumber) {
-        // get vehicle entry details from DB
-        // update exit time
-        // save to db
-        //publish vehicle exited event
+        log.info("Processing vehicle exit: vehicleNumber={}", vehicleNumber);
+
         ParkingEntry entry = repository.findByVehicleNumberAndActiveTrue(vehicleNumber)
-                .orElseThrow(() -> EntryNotFoundException.forVehicleEntry(vehicleNumber));
+                .orElseThrow(() -> {
+                    log.warn("Active entry not found for vehicleNumber={}", vehicleNumber);
+                    return EntryNotFoundException.forVehicleEntry(vehicleNumber);
+                });
 
         entry.setExitTime(LocalDateTime.now());
         entry.setActive(false);
-        repository.save(entry);
-        System.out.println("Publish Vehicle Exited: " + entry.getVehicleNumber());
+
+        ParkingEntry updatedEntry = repository.save(entry);
+
+        log.debug("Updated parking entry: id={} vehicleNumber={} entryTime={} exitTime={}",
+                updatedEntry.getId(),
+                updatedEntry.getVehicleNumber(),
+                updatedEntry.getEntryTime(),
+                updatedEntry.getExitTime());
+
+
         publisher.publishEvent(new VehicleExitedEvent(vehicleNumber, entry.getEntryTime(), entry.getExitTime()));
+
+        log.info("Vehicle exit event published: vehicleNumber={} exitTime={}",
+                vehicleNumber,
+                updatedEntry.getExitTime());
     }
 }
