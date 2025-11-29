@@ -2,6 +2,8 @@ package com.farabitech.smartparking_system.gateway.internal.controller;
 
 import com.farabitech.smartparking_system.billing.spi.BillingSPI;
 import com.farabitech.smartparking_system.billing.spi.dto.BillingDTO;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +25,8 @@ public class ReportController {
     }
 
     @GetMapping({"/invoices"})
+    @Timed(value = "latencyInSec.invoicesSummery")
+    @Counted(value ="counter.invoicesSummery" )
     @WithSpan(value = "ReportController#getInvoicesSummery", kind = SpanKind.SERVER)
     Double getInvoicesSummery(Model model, HttpSession session) {
         log.info("Received request to get invoice summary");

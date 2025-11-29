@@ -1,5 +1,7 @@
 package com.farabitech.smartparking_system.gateway.internal.controller;
 
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import io.opentelemetry.api.trace.SpanKind;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ private final EntrySPI entrySPI;
     }
 
     @PostMapping("/entry")
+    @Timed(value = "latencyInSec.entry")
+    @Counted(value ="counter.entry" )
     @WithSpan(value = "EntryController#entry", kind = SpanKind.SERVER)
     public ResponseEntity<String> entry(@RequestParam String vehicleNumber) {
         log.info("Received request for vehicle entry: vehicleNumber={}", vehicleNumber);
@@ -34,6 +38,8 @@ private final EntrySPI entrySPI;
     }
 
     @PostMapping("/exit")
+    @Timed(value = "latencyInSec.exit")
+    @Counted(value ="counter.exit" )
     @WithSpan(value = "EntryController#exit", kind = SpanKind.SERVER)
     public ResponseEntity<String> exit(@RequestParam String vehicleNumber) {
 
