@@ -1,0 +1,90 @@
+spring:
+  application:
+    name: smartParking-system
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  modulith:
+    events:
+      jdbc:
+        schema: events
+        schema-initialization:
+          enabled: true
+      republish-outstanding-events-on-restart: true
+      # options: update | delete | archive
+      completion-mode: update
+
+server:
+  port: 9191
+
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health,info,metrics,prometheus,db
+  metrics:
+    enable:
+      hikari: true
+  endpoint:
+    shutdown:
+      access: read_only
+    health:
+      probes:
+        enabled: true   # enables /actuator/health/liveness & readiness
+      show-details: never   # don't leak DB/Kafka details
+      group:
+        live:
+          include: ping        # JVM only
+        ready:
+          include: db, diskSpace # real dependencies
+    metrics.access: read_only
+    info.access: read_only
+    prometheus.access: read_only
+    loggers.access: read_only
+    threaddump.access: read_only
+    env.access: read_only
+    configprops.show-values: always
+    env.show-values: always
+    mappings:
+      access: read_only
+  info:
+    git.mode: full
+    build.enabled: true
+    env.enabled: true
+
+  prometheus:
+    metrics:
+      export.enabled: true
+
+
+
+#Run app ?
+#Open browser:
+#? http://localhost:9191/h2-console
+#Login:
+#JDBC URL: jdbc:h2:mem:testdb
+#User: sa
+#Pass: (empty)
+
+#http://localhost:9191/swagger-ui/index.html
