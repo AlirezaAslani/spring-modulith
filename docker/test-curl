@@ -1,0 +1,49 @@
+1- docker compose up -d
+Note to checking loges use: docker compose logs -f otel-collector
+
+curl --location 'http://localhost:4318/v1/metrics' \
+--header 'Content-Type: application/json' \
+--data '{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": { "stringValue": "test-service" }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "manual-test",
+            "version": "1.0.0"
+          },
+          "metrics": [
+            {
+              "name": "cpu_usage",
+              "description": "CPU usage percent",
+              "unit": "%",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "asDouble": 12.5,
+                    "attributes": [
+                      {
+                        "key": "host",
+                        "value": { "stringValue": "local" }
+                      }
+                    ],
+                    "timeUnixNano": 1733140000000000000
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+'
