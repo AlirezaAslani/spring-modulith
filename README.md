@@ -256,3 +256,70 @@ smart-parking-system
 
 ---
 
+
+## 🚀 Execution Guide
+
+### **1. Build & Run Services**
+
+```sh
+docker build -t smart-parking-service:1.0 .
+docker compose up
+```
+
+### **2. Check Running Containers**
+
+```sh
+docker container ls
+```
+
+---
+
+## 📊 Grafana Setup
+
+Access Grafana at:
+
+```
+http://localhost:3000/
+```
+
+### **Add Loki**
+
+You may see this message:
+
+> This message appears because you are running Grafana in Docker as root:root, but Grafana does NOT allow uninstalling built‑in plugins.
+
+This is expected and does **not** prevent adding Loki.
+
+#### ✔ Add Loki Datasource
+
+Go to:
+
+```
+Connections → Loki → Add new data source
+```
+
+Use this URL:
+
+```
+http://loki:3100
+```
+
+### **Add Tempo**
+
+```
+http://tempo:3200
+```
+
+### **Add Mimir (Prometheus Datasource)**
+
+```
+http://mimir-1:8080/prometheus
+```
+
+Set HTTP Header:
+
+```
+X-Scope-OrgID: pluralsight
+```
+
+
